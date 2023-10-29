@@ -13,7 +13,7 @@ int main() {
     int opcao, aux = 0; //, tamanho = 0;
 
 
-    //tam(&usuarios);//Para armazenar o tamanho da lista de clientes
+    tam(&usuarios);//Para armazenar o tamanho da lista de clientes
 
     while (1){
 
@@ -36,7 +36,7 @@ int main() {
             case 3:
                 printf("'Listar Cliente' selecionado.\n");
                 limpa();
-                //listar_clientes(usuarios.tamanho, usuarios.clientes);
+                listar_clientes(usuarios.tamanho, usuarios.clientes);
                 break;
             case 4:
                 printf("'Debito' selecionado.\n");
