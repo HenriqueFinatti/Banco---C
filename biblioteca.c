@@ -1,29 +1,9 @@
 #include "biblioteca.h" //Duas bibliotecas de funções incluidas
-//#include "Biblioteca_auxiliar.h"
+#include "Biblioteca_auxiliar.h"
 #include <stdio.h>
 #include <string.h>
 
 lista_de_clientes usuarios;
-
-void apagar_cliente(int *tam, Cliente *clientes) { //Função de apagar clientes
-    int indice;
-
-    printf("Insira o numero do cliente que deseja apagar: "); scanf("%d", &indice);
-    //É pedido o número do cliente
-
-    if (indice >= 1 && indice <= *tam)//Verifica se o numero do cliente existe
-    {
-        for (int i = indice - 1; i < *tam - 1; i++) {
-            usuarios.clientes[i] = usuarios.clientes[i + 1];//Alteração de todos os clientes para posição anterior
-        }
-        (*tam)--;//Reduz o numero de clientes
-        printf("Cliente de numero %d apagado com sucesso.\n", indice);
-    }
-    else
-    {   //Condição caso o numero do cliente não exista
-        printf("Numero invalido.\n");
-    }
-}
 
 void novo_cliente(int tamanho, Cliente *clientes) {//Função de cadastrar clientes
     char temp[20];

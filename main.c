@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "biblioteca.h"
-//#include "Biblioteca_auxiliar.h"
+#include "Biblioteca_auxiliar.h"
 
 void menu();
 
-//Cliente clientes[1000];
-//extern lista_de_clientes usuarios;
+Cliente clientes[1000];
+extern lista_de_clientes usuarios;
 
 
 
@@ -23,48 +23,48 @@ int main() {
         switch (opcao) {
             case 1:
                 printf("'Novo Cliente' selecionado.\n");
-                //limpa();
-                //novo_cliente(usuarios.tamanho, usuarios.clientes);
-                //usuarios.tamanho++;
+                limpa();
+                novo_cliente(usuarios.tamanho, usuarios.clientes);
+                usuarios.tamanho++;
                 break;
             case 2:
                 printf("'Apaga Cliente' selecionado.\n");
-                //limpa();
+                limpa();
                 //apagar_cliente(&usuarios.tamanho, usuarios.clientes);
                 break;
             case 3:
                 printf("'Listar Cliente' selecionado.\n");
-                //limpa();
+                limpa();
                 //listar_clientes(usuarios.tamanho, usuarios.clientes);
                 break;
             case 4:
                 printf("'Debito' selecionado.\n");
-                //limpa();
+                limpa();
                 //debito(usuarios.tamanho, usuarios.clientes);
                 break;
             case 5:
                 printf("'Deposito' selecionado.\n");
-                //limpa();
+                limpa();
                 // deposito(usuarios.tamanho, usuarios.clientes);
                 break;
             case 6:
                 printf("'Extrato' selecionado.\n");
-                //limpa();
+                limpa();
                 // extrato(usuarios.tamanho, usuarios.clientes);
                 break;
             case 7:
                 printf("'Transferencia entre contas' selecionado.\n");
-                //limpa();
+                limpa();
                 // transferencia(usuarios.tamanho, usuarios.clientes);
                 break;
             case 0:
                 printf("'Sair' selecionado.\n");
-                //limpa();
+                limpa();
                 // escreve(&usuarios);
                 aux = 1;
                 break;
             default:
-                //limpa();
+                limpa();
                 printf("Escolha invalida.\n");
         }
         if(aux)break;

@@ -26,7 +26,6 @@ typedef struct{
     int tamanho;
 } lista_de_clientes;
 
-void listar_clientes(int tam, Cliente *cliente);
 void novo_cliente(int tamanho, Cliente *clientes);
 
 #endif //BANCO___C_BIBLIOTECA_H
