@@ -30,6 +30,7 @@ int main() {
             case 2:
                 printf("'Apaga Cliente' selecionado.\n");
                 limpa();
+
                 apagar_cliente(&usuarios.tamanho, usuarios.clientes);
                 break;
             case 3:
