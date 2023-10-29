@@ -191,3 +191,61 @@ void debito(int tam, Cliente *clientes) {//Função de débito
         }
     }
 }
+
+void deposito(int tam, Cliente *clientes) {
+    char cpf[20], senha[20];
+    int indice, aux, valor, confirma = 0;
+
+    printf("Insira o seu CPF: ");
+    scanf("%20[^\n]s", cpf);//Recebemos o cpf e guaradamos em um vetor temporário
+
+    indice = verificaCPF(tam, clientes, cpf); //Recebemos a posicao de onde está o titular do cpf
+
+    if (indice == -1)
+    {
+        printf("CPF não encontrado.\n"); //Caso o cpf n seja encontrado
+    }
+    else
+    {
+        do
+        {// 'Do while' para pedir a senha do usuário
+            limpa();
+
+            printf("Insira a sua senha: "); scanf("%20[^\n]s", senha);
+            aux = verificaSenha(tam, clientes, senha);//verifica a senha
+
+            if (aux)
+            {
+                confirma = 1; //condicao para encerrar o 'do while'
+            }
+            else
+            {
+                printf("Senha inválida. (1 - sair / 0 - tentar novamente)\n");
+                scanf("%d", &confirma);
+            }
+        } while (confirma != 1);
+
+        printf("Insira o valor que deseja depositar na sua conta: ");
+        scanf("%d", &valor);//Recebemos o valor a ser depositado
+
+        if (valor > 0)
+        {
+            double taxa;
+
+            taxa = aplica_taxa(indice, clientes, valor);//Aplica a taxa
+            clientes[indice].saldo += valor; //Deposita o valor
+
+            strcpy(clientes[indice].historico[clientes[indice].num_transacoes].descricao, "Depósito");//Registra a descricao
+            clientes[indice].historico[clientes[indice].num_transacoes].valor = valor;//Registra o valor
+            clientes[indice].historico[clientes[indice].num_transacoes].taxa = taxa;//Registra a taxa
+            clientes[indice].num_transacoes++;
+
+            printf("Deposito de %d realizado com sucesso. Novo saldo: %.2lf\n", valor, clientes[indice].saldo);
+        }
+
+        else
+        {
+            printf("O valor do deposito deve ser maior que zero.\n");//Print caso o valor seja invalido
+        }
+    }
+}
