@@ -78,3 +78,17 @@ void apagar_cliente(int *tam, Cliente *clientes) { //Função de apagar clientes
         printf("Numero invalido.\n");
     }
 }
+
+void listar_clientes(int tam, Cliente *clientes){//Função de listar clientes
+
+    for(int i = 0; i < tam; i++)
+    {
+        // Lista cada informação de todos os clientes por ordem de criação de conta
+        printf("Cliente %d\n", i+1);
+        printf("Nome: %s\n",clientes[i].nome);
+        printf("Saldo: %.2lf\n",clientes[i].saldo);
+        printf("Senha: %s\n",clientes[i].senha);
+        printf("CPF: %s\n",clientes[i].cpf);
+        printf("Tipo de Conta: %s\n\n", clientes[i].tipo);
+    }
+}
