@@ -249,3 +249,81 @@ void deposito(int tam, Cliente *clientes) {
         }
     }
 }
+
+
+void transferencia(int tam, Cliente *clientes) {
+    char cpf_origem[20], cpf_destino[20];
+    int indice_origem, indice_destino, tipo;
+    double taxa, valor;
+
+    printf("Insira o CPF da conta de origem: ");scanf("%20[^\n]s", cpf_origem); //Recebe o cpf de origem
+    indice_origem = verificaCPF(tam, clientes, cpf_origem);//Recebe o indice do cpf de origem
+    limpa();
+
+    printf("Insira o CPF da conta de destino: ");scanf("%20[^\n]s", cpf_destino); //Recebe o cpf de destino
+    indice_destino = verificaCPF(tam, clientes, cpf_destino);// Recebe o indice do cpf de destino
+    limpa();
+
+
+    printf("\nNome da conta de origem: %s\n", clientes[indice_origem].nome);//Confirma os dados das contas envolvidas
+    printf("Nome da conta de destino: %s\n\n", clientes[indice_destino].nome);
+
+    if (indice_origem != -1 && -1 != indice_destino)
+    {
+        printf("Insira o valor que deseja transferir: "); scanf("%lf", &valor);//Recebe o valor a ser transferido
+        limpa();
+
+        if(valor > 0)
+        {
+            tipo = confere_tipo(indice_origem, clientes);//Recebemos o tipo de conta
+            taxa = aplica_taxa(indice_origem, clientes, valor);//Recebemos a taxa a ser aplicada
+            double valorOrigem = valor + taxa; //Juntamos o valor total a ser descontada da conta de origem
+
+            if(tipo && (clientes[indice_origem].saldo - valor) >= -5000)//Caso a conta seja plus e ainda tenha saldo para a transferencia
+            {
+                clientes[indice_origem].saldo -= valorOrigem;//desconto do valor
+                clientes[indice_destino].saldo += valor;//acréscimo do valor
+
+                strcpy(clientes[indice_origem].historico[clientes[indice_origem].num_transacoes].descricao, "Transferência (envio)");//Registra a descricao
+                clientes[indice_origem].historico[clientes[indice_origem].num_transacoes].valor = -valor; //Registra o valor descontado
+                clientes[indice_origem].historico[clientes[indice_origem].num_transacoes].taxa = taxa; //Registra a taxa aplicada
+                clientes[indice_origem].num_transacoes++;
+
+                strcpy(clientes[indice_destino].historico[clientes[indice_destino].num_transacoes].descricao, "Transferência (recebimento)");//Registra a descricao
+                clientes[indice_destino].historico[clientes[indice_destino].num_transacoes].valor = valor; //Registra o valor recebido
+                clientes[indice_destino].historico[clientes[indice_destino].num_transacoes].taxa = 0; // Não há taxa para o destinatário
+                clientes[indice_destino].num_transacoes++;
+
+                printf("Transferencia de %.2lf realizada com sucesso.\n", valor);
+            }
+            else if(!tipo && (clientes[indice_origem].saldo - valor) >= -1000)//Caso a conta seja comum e tenha saldo suficiente para a transferência
+            {
+                clientes[indice_origem].saldo -= valorOrigem;//desconto do valor
+                clientes[indice_destino].saldo += valor;//acrescimo do valor
+
+                strcpy(clientes[indice_origem].historico[clientes[indice_origem].num_transacoes].descricao, "Transferência (envio)");//Registra a descricao
+                clientes[indice_origem].historico[clientes[indice_origem].num_transacoes].valor = -valor;//Registra o valor descontado
+                clientes[indice_origem].historico[clientes[indice_origem].num_transacoes].taxa = taxa;//Registra a taxa
+                clientes[indice_origem].num_transacoes++;
+
+                strcpy(clientes[indice_destino].historico[clientes[indice_destino].num_transacoes].descricao, "Transferência (recebimento)");//Registra a descricao
+                clientes[indice_destino].historico[clientes[indice_destino].num_transacoes].valor = valor;//Registra o valor recebido
+                clientes[indice_destino].historico[clientes[indice_destino].num_transacoes].taxa = 0; // Não há taxa para o destinatário
+                clientes[indice_destino].num_transacoes++;
+                printf("Transferencia de %.2lf realizada com sucesso.\n", valor);
+            }
+            else
+            {
+                printf("Valor insuficiente para transferencia.\n");//Caso o cliente não tenha saldo para fazer a transferencia
+            }
+        }
+        else
+        {
+            printf("Valor invalido para transferencia\n");//Caso o valor não seja aceito
+        }
+    }
+    else
+    {
+        printf("Conta de origem ou conta de destino nao encontrada.\n");//Caso uma das contas não exista
+    }
+}
