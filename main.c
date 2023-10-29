@@ -1,5 +1,5 @@
 #include <stdio.h>
-//#include "biblioteca.h"
+#include "biblioteca.h"
 //#include "Biblioteca_auxiliar.h"
 
 void menu();
