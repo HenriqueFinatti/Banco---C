@@ -47,7 +47,7 @@ int main() {
             case 5:
                 printf("'Deposito' selecionado.\n");
                 limpa();
-                // deposito(usuarios.tamanho, usuarios.clientes);
+                deposito(usuarios.tamanho, usuarios.clientes);
                 break;
             case 6:
                 printf("'Extrato' selecionado.\n");
