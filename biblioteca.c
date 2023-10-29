@@ -327,3 +327,52 @@ void transferencia(int tam, Cliente *clientes) {
         printf("Conta de origem ou conta de destino nao encontrada.\n");//Caso uma das contas não exista
     }
 }
+
+void imprimirExtrato(Cliente cliente) {
+
+    // Imprime as informações do cliente
+    printf("Extrato do Cliente:\n");
+    printf("Nome: %s\n", cliente.nome); // Imprime o nome do cliente
+    printf("CPF: %s\n", cliente.cpf); // Imprime o CPF do cliente
+    printf("Tipo de Conta: %s\n", cliente.tipo); // Imprime o tipo de conta do cliente
+    printf("Saldo Atual: %.2lf\n", cliente.saldo); // Imprime o saldo atual do cliente
+
+    printf("Transacoes:\n"); // Inicia a impressão das transações
+    char arquivo[50];
+    sprintf(arquivo, "%s.txt", cliente.cpf); // Formata o nome do arquivo com o CPF do cliente
+
+    FILE *f = fopen(arquivo, "w"); // Abre o arquivo para escrita
+
+    if(f== NULL){
+        printf("ERRO AO ABRIR"); // Se houver um erro ao abrir o arquivo, imprime uma mensagem de erro
+    }
+    for (int j = 0; j < cliente.num_transacoes; j++) { // Loop através das transações do cliente
+        if (cliente.historico[j].valor != 0) { // Se a transação tiver um valor diferente de zero
+
+            fprintf(f, "-------------------------\n"); // Imprime uma linha divisória no arquivo
+            printf("-------------------------\n"); // Imprime uma linha divisória na saída padrão
+
+            fprintf(f, "Transacao %d:\n", j + 1); // Imprime o número da transação no arquivo
+            printf("Transacao %d:\n", j + 1); // Imprime o número da transação na saída padrão
+
+            fprintf(f, "Descricao: %s\n", cliente.historico[j].descricao); // Imprime a descrição da transação no arquivo
+            printf("Descricao: %s\n", cliente.historico[j].descricao); // Imprime a descrição da transação na saída padrão
+
+            fprintf(f, "Valor: %.2lf\n", cliente.historico[j].valor); // Imprime o valor da transação no arquivo
+            printf("Valor: %.2lf\n", cliente.historico[j].valor); // Imprime o valor da transação na saída padrão
+
+            if (strcmp(cliente.historico[j].descricao, "Debito") == 0) {
+                fprintf(f, "Taxa do Debito: %.2lf\n", cliente.historico[j].taxa); // Se a descrição for "Debito", imprime a taxa de débito no arquivo
+                printf("Taxa do Debito: %.2lf\n", cliente.historico[j].taxa); // Se a descrição for "Debito", imprime a taxa de débito na saída padrão
+            }
+            else if (strcmp(cliente.historico[j].descricao, "Transferência (envio)") == 0) {
+                fprintf(f, "Taxa da Transferencia: %.2lf\n", cliente.historico[j].taxa); // Se a descrição for "Transferência (envio)", imprime a taxa de transferência no arquivo
+                printf("Taxa da Transferencia: %.2lf\n", cliente.historico[j].taxa); // Se a descrição for "Transferência (envio)", imprime a taxa de transferência na saída padrão
+            }
+        }
+
+        fclose(f); // Fecha o arquivo após escrever todas as transações
+    }
+    printf("\n"); // Imprime uma linha em branco para separar as saídas
+}
+
