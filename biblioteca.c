@@ -376,3 +376,52 @@ void imprimirExtrato(Cliente cliente) {
     printf("\n"); // Imprime uma linha em branco para separar as saídas
 }
 
+void extrato(int tam, Cliente *clientes) {
+    char cpf[20]; // Variável para armazenar o CPF do cliente
+    char senha[20]; // Variável para armazenar a senha do cliente
+    int aux, aux2; // Variáveis auxiliares
+
+    printf("Insira o seu CPF: "); // Solicita ao usuário que insira o CPF
+
+    scanf("%20[^\n]s", cpf); // Lê o CPF inserido pelo usuário
+
+    aux = verificaCPF(tam, clientes, cpf); // Verifica se o CPF inserido existe na lista de clientes
+
+    if (aux == -1) { // Se o CPF não for encontrado
+        printf("CPF nao encontrado.\n"); // Imprime uma mensagem de erro
+    } else {
+        do {
+            limpa(); // Limpa a tela
+            printf("Insira a sua senha: "); // Solicita ao usuário que insira a senha
+            scanf("%15[^\n]s", senha);
+            aux = verificaSenha(tam, clientes, senha); // Verifica se a senha inserida é correta
+            if (aux) { // Se a senha for correta
+                aux2 = 1;
+            } else {
+                printf("Senha invalida. (1 - sair / 0 - Tentar novamente)\n");
+                scanf("%d", &aux2);
+            }
+        } while (aux2 != 1);
+
+        int indice = -1; // Variável para armazenar o índice do cliente na lista de clientes
+
+        for (int i = 0; i < tam; i++) { // Loop através da lista de clientes
+            aux = strncmp(cpf, clientes[i].cpf, 11); // Compara o CPF inserido com o CPF do cliente atual na lista
+            if (aux == 0) {
+                indice = i; // Armazena o índice do cliente
+                break;
+            }
+        }
+
+        if (indice != -1)
+        { // Se um cliente com o CPF inserido foi encontrado
+
+            imprimirExtrato(clientes[indice]); // Imprime o extrato do cliente
+        }
+        else
+        {
+
+            printf("Erro interno: cliente nao encontrado.\n"); // Imprime uma mensagem de erro
+        }
+    }
+}
