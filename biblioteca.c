@@ -92,3 +92,102 @@ void listar_clientes(int tam, Cliente *clientes){//Função de listar clientes
         printf("Tipo de Conta: %s\n\n", clientes[i].tipo);
     }
 }
+
+void debito(int tam, Cliente *clientes) {//Função de débito
+    char cpf[20], senha[20];
+    int aux, aux2, valor, confirma = 0, indice;
+
+    printf("Insira o seu CPF: "); scanf("%20[^\n]s", cpf);// É pedido o CPF
+
+    indice = verificaCPF(tam, clientes, cpf);//Aqui verifico o CPF e recebo indice dele
+
+    if (indice == -1)
+    {
+        //Condição caso o CPF não exista
+        printf("CPF nao encontrado.\n");
+    }
+    else
+    {
+        do// Função 'Do while' para pedir a senha
+        {
+            limpa();
+
+            printf("Insira a sua senha: "); scanf("%20[^\n]s", senha);//Peço a senha
+            aux = verificaSenha(tam, clientes, senha);//verifico se a senha está correta
+
+            if (aux)
+            {
+                //Caso seja correta o do while quebra
+                confirma = 1;
+                aux2 = 1;
+            }
+            else
+            {
+                //Caso seja inválida é perguntado se o cliente quer tentar novamente ou sair da função
+                printf("Senha invalida. (1 - sair / 0 - tentar novamente)\n");
+                scanf("%d", &confirma);
+            }
+        } while (confirma != 1);
+
+        if (aux2)
+        {
+            //Caso a senha seja correta é requisitado o valor de débito
+            printf("Insira o valor que deseja debitar da sua conta: ");
+            scanf("%d", &valor);
+
+            if (valor > 0)//Verifica se o valor é valido
+            {
+                double taxa;
+                int tipo;
+
+                taxa = aplica_taxa(indice, clientes, valor);//Aplica a taxa de acordo com o tipo da conta
+                tipo = confere_tipo(indice, clientes);// Verifica o tipo da conta
+                //Ambas as funções explicadas na estrutura da função
+
+                if(tipo)//Caso o tipo seja da conta seja Plus
+                {
+                    if (clientes[indice].saldo - valor - taxa >= -5000.0)//Verifica o limite de saldo negativo
+                    {
+                        clientes[indice].saldo -= (valor + taxa);//Descontado o valor da conta
+                        strcpy(clientes[indice].historico[clientes[indice].num_transacoes].descricao, "Debito");// Aqui estamos a descricao "Débtio" para a categoria descricao da struct de extrato
+                        clientes[indice].historico[clientes[indice].num_transacoes].valor = valor;//Registrado o valor da transacao
+                        clientes[indice].historico[clientes[indice].num_transacoes].taxa = taxa; //Registrado a taxa da transacao
+                        clientes[indice].num_transacoes++; //Numero de transações alterado
+
+                        printf("Debito de %d realizado com sucesso. Taxa cobrada de: %.2lf. Novo saldo: %.2lf\n", valor, taxa, clientes[indice].saldo);
+                        //Confirmação do valor do valor removido, taxa cobrada e o saldo atual
+                    }
+                    else
+                    {
+                        //Caso o saldo seja insuficiente
+                        printf("Saldo insuficiente ou limite de saldo negativo excedido.\n");
+                    }
+                }
+                else//Caso o tipo da conta seja comum
+                {
+                    if (clientes[indice].saldo - valor - taxa >= -1000.0)//Verifica o limite de saldo negativo
+                    {
+                        clientes[indice].saldo -= (valor + taxa);//Descontado o valor da conta
+                        strcpy(clientes[indice].historico[clientes[indice].num_transacoes].descricao, "Debito");// Aqui estamos a descricao "Débtio" para a categoria descricao da struct de extrato
+                        clientes[indice].historico[clientes[indice].num_transacoes].valor = valor;// Registrado o valor da transacao
+                        clientes[indice].historico[clientes[indice].num_transacoes].taxa = taxa; //Registrado a taxa da transacao
+                        clientes[indice].num_transacoes++;
+
+                        printf("Debito de %d realizado com sucesso. Taxa cobrada de: %.2lf. Novo saldo: %.2lf\n", valor, taxa, clientes[indice].saldo);
+                        //Confirmação do valor removido, taxa cobrado e saldo atual
+                    }
+                    else
+                    {
+                        //Caso o saldo seja insuficiente
+                        printf("Saldo insuficiente ou limite de saldo negativo excedido.\n");
+                    }
+                }
+            }
+            else
+            {
+                //Caso o valor inserido seja inválido
+                printf("O valor do debito deve ser maior que zero.\n");
+            }
+        }
+    }
+}

@@ -41,7 +41,7 @@ int main() {
             case 4:
                 printf("'Debito' selecionado.\n");
                 limpa();
-                //debito(usuarios.tamanho, usuarios.clientes);
+                debito(usuarios.tamanho, usuarios.clientes);
                 break;
             case 5:
                 printf("'Deposito' selecionado.\n");
